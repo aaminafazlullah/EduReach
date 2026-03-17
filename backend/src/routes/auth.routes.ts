@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { authValidators, validateRequest } from '../validators/authValidators';
-import { register, login, schoolRegister, volunteerRegister, forgotPassword } from '../controllers/authController';
+import { register, login, schoolRegister, volunteerRegister, forgotPassword, verifyEmail, resendVerificationEmail } from '../controllers/authController';
 
 const router = Router();
 
@@ -42,6 +42,18 @@ router.post(
   authValidators.forgotPassword,
   validateRequest,
   forgotPassword
+);
+
+// POST /api/auth/verify-email
+router.post(
+  '/verify-email',
+  verifyEmail
+);
+
+// POST /api/auth/resend-verification-email
+router.post(
+  '/resend-verification-email',
+  resendVerificationEmail
 );
 
 export default router;
