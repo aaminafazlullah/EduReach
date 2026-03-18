@@ -1,4 +1,8 @@
+import { useNavigate } from 'react-router-dom'
+
 export default function EmailVerificationBadge({ isVerified, className = '' }) {
+  const navigate = useNavigate()
+
   if (isVerified) {
     return (
       <div className={`inline-flex items-center gap-2 rounded-full bg-green-50 px-3 py-1 ${className}`}>
@@ -19,7 +23,10 @@ export default function EmailVerificationBadge({ isVerified, className = '' }) {
   }
 
   return (
-    <div className={`inline-flex items-center gap-2 rounded-full bg-amber-50 px-3 py-1 ${className}`}>
+    <button
+      onClick={() => navigate('/verify-email')}
+      className={`inline-flex items-center gap-2 rounded-full bg-amber-50 px-3 py-1 hover:bg-amber-100 transition cursor-pointer ${className}`}
+    >
       <svg
         className="h-4 w-4 text-amber-600"
         fill="currentColor"
@@ -32,6 +39,6 @@ export default function EmailVerificationBadge({ isVerified, className = '' }) {
         />
       </svg>
       <span className="text-xs font-medium text-amber-700">Verify Email</span>
-    </div>
+    </button>
   )
 }
