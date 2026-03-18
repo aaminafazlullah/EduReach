@@ -3,8 +3,11 @@ import DashboardLayout from '../../layouts/DashboardLayout.jsx'
 import Card from '../../components/Card.jsx'
 import Loader from '../../components/Loader.jsx'
 import { eventService } from '../../services/eventService.js'
+import EmailVerificationBadge from '../../components/EmailVerificationBadge.jsx'
+import { useAuth } from '../../context/AuthContext.jsx'
 
 export default function SchoolDashboard() {
+  const { emailVerified } = useAuth()
   const [events, setEvents] = useState([])
   const [loading, setLoading] = useState(true)
 
@@ -25,9 +28,12 @@ export default function SchoolDashboard() {
   return (
     <DashboardLayout>
       <div className="space-y-6">
-        <h1 className="text-lg font-semibold tracking-tight text-slate-900">
-          School overview
-        </h1>
+        <div className="flex items-center justify-between">
+          <h1 className="text-lg font-semibold tracking-tight text-slate-900">
+            School overview
+          </h1>
+          <EmailVerificationBadge isVerified={emailVerified} />
+        </div>
         {loading ? (
           <Loader />
         ) : (

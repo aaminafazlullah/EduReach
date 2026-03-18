@@ -3,6 +3,7 @@ import { AuthProvider, useAuth } from './context/AuthContext.jsx'
 import Landing from './pages/Landing.jsx'
 import Login from './pages/Login.jsx'
 import Register from './pages/Register.jsx'
+import VerifyEmail from './pages/VerifyEmail.jsx'
 import DonorDashboard from './pages/donor/DonorDashboard.jsx'
 import DonateMoney from './pages/donor/DonateMoney.jsx'
 import DonateBooks from './pages/donor/DonateBooks.jsx'
@@ -44,6 +45,7 @@ function AppRoutes() {
       <Route path="/" element={<Landing />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/verify-email" element={<VerifyEmail />} />
 
       <Route
         path="/donor"

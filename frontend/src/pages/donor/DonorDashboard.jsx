@@ -3,8 +3,11 @@ import Card from '../../components/Card.jsx'
 import { useEffect, useState } from 'react'
 import { donorService } from '../../services/donorService.js'
 import Loader from '../../components/Loader.jsx'
+import EmailVerificationBadge from '../../components/EmailVerificationBadge.jsx'
+import { useAuth } from '../../context/AuthContext.jsx'
 
 export default function DonorDashboard() {
+  const { emailVerified } = useAuth()
   const [stats, setStats] = useState(null)
   const [loading, setLoading] = useState(true)
 
@@ -29,9 +32,12 @@ export default function DonorDashboard() {
   return (
     <DashboardLayout>
       <div className="space-y-6">
-        <h1 className="text-lg font-semibold tracking-tight text-slate-900">
-          Donor overview
-        </h1>
+        <div className="flex items-center justify-between">
+          <h1 className="text-lg font-semibold tracking-tight text-slate-900">
+            Donor overview
+          </h1>
+          <EmailVerificationBadge isVerified={emailVerified} />
+        </div>
         {loading ? (
           <Loader />
         ) : (
