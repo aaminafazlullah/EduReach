@@ -1,17 +1,21 @@
-export default function Card({ title, description, children, className = '' }) {
+export default function Card({ title, description, children, className = '', accent = false }) {
   return (
     <section
-      className={`rounded-xl bg-surface p-6 shadow-soft ring-1 ring-slate-100 ${className}`}
+      className={`rounded-lg bg-surface p-6 shadow-card transition-all duration-200 hover:shadow-elevated ${
+        accent ? 'border-l-4 border-accent' : ''
+      } ${className}`}
     >
       {(title || description) && (
-        <header className="mb-4">
+        <header className={`mb-4 ${title ? 'border-t border-border pt-4' : ''}`}>
           {title && (
-            <h2 className="text-sm font-semibold tracking-tight text-slate-900">
+            <h2 className="font-display text-base font-semibold text-ink">
               {title}
             </h2>
           )}
           {description && (
-            <p className="mt-1 text-xs text-muted">{description}</p>
+            <p className="font-sans mt-1 text-sm text-ink-2">
+              {description}
+            </p>
           )}
         </header>
       )}

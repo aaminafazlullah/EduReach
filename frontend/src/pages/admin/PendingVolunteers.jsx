@@ -39,37 +39,47 @@ export default function PendingVolunteers() {
 
   return (
     <DashboardLayout>
-      <Card
-        title="Pending volunteers"
-        description="Review new volunteer applications before approval."
-      >
-        {loading ? (
-          <Loader />
-        ) : (
-          <Table
-            columns={[
-              { key: 'name', header: 'Name' },
-              { key: 'skills', header: 'Skills' },
-              {
-                key: 'actions',
-                header: '',
-                render: (row) => (
-                  <Button
-                    type="button"
-                    className="px-3 py-1 text-xs"
-                    disabled={updating}
-                    onClick={() => approve(row.id)}
-                  >
-                    Approve
-                  </Button>
-                ),
-              },
-            ]}
-            data={rows}
-            emptyLabel="No volunteers pending approval."
-          />
-        )}
-      </Card>
+      <div className="space-y-8">
+        {/* Header */}
+        <div>
+          <h1 className="font-display text-2xl font-semibold text-ink mb-2">
+            Pending Volunteers
+          </h1>
+          <p className="font-sans text-sm text-ink-2">
+            Review new volunteer applications before approval
+          </p>
+        </div>
+
+        <Card>
+          {loading ? (
+            <Loader />
+          ) : (
+            <Table
+              columns={[
+                { key: 'name', header: 'Volunteer Name' },
+                { key: 'email', header: 'Email' },
+                { key: 'skills', header: 'Skills' },
+                {
+                  key: 'actions',
+                  header: 'Actions',
+                  render: (row) => (
+                    <Button
+                      onClick={() => approve(row.id)}
+                      loading={updating}
+                      disabled={updating}
+                      className="text-xs"
+                    >
+                      {updating ? 'Approving...' : 'Approve'}
+                    </Button>
+                  ),
+                },
+              ]}
+              data={rows}
+              emptyLabel="No volunteers pending approval"
+            />
+          )}
+        </Card>
+      </div>
     </DashboardLayout>
   )
 }

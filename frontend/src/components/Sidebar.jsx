@@ -36,7 +36,7 @@ const baseItemsByRole = {
 }
 
 export default function Sidebar() {
-  const { role } = useAuth()
+  const { role, logout } = useAuth()
   const location = useLocation()
 
   if (!role) return null
@@ -44,26 +44,27 @@ export default function Sidebar() {
   const navItems = baseItemsByRole[role] ?? []
 
   return (
-    <aside className="hidden w-60 border-r bg-surface/90 px-4 py-5 shadow-soft lg:block">
-      <div className="mb-8 flex items-center gap-2">
-        <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-slate-900 text-xs font-semibold text-white">
+    <aside className="hidden w-60 border-r border-border bg-surface-2 px-4 py-5 lg:block">
+      <div className="mb-8 flex items-center gap-3">
+        <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-sm font-semibold text-white">
           ER
         </div>
-        <span className="text-sm font-semibold tracking-tight text-slate-900">
+        <span className="font-display text-base font-semibold text-ink">
           EduReach
         </span>
       </div>
-      <nav className="space-y-1 text-sm">
+      
+      <nav className="space-y-1">
         {navItems.map(({ to, label, icon: Icon }) => {
           const active = location.pathname === to
           return (
             <Link
               key={to}
               to={to}
-              className={`flex items-center gap-2 rounded-lg px-3 py-2 transition ${
+              className={`flex items-center gap-3 rounded-md px-3 py-2.5 font-sans text-sm transition-all duration-200 ${
                 active
-                  ? 'bg-slate-900 text-white shadow-sm'
-                  : 'text-slate-600 hover:bg-slate-100'
+                  ? 'bg-accent-light text-accent border-l-3 border-accent font-semibold'
+                  : 'text-ink-2 hover:bg-border hover:text-ink'
               }`}
             >
               <Icon className="h-4 w-4" />
@@ -72,6 +73,20 @@ export default function Sidebar() {
           )
         })}
       </nav>
+
+      <div className="absolute bottom-5 left-4 right-4">
+        <div className="mb-3 rounded-md bg-surface px-3 py-2">
+          <p className="font-sans text-xs text-ink-2">
+            Logged in as <span className="font-medium capitalize text-ink">{role}</span>
+          </p>
+        </div>
+        <button
+          onClick={logout}
+          className="w-full rounded-md border border-border bg-surface px-3 py-2 font-sans text-xs font-medium text-ink-2 transition-colors hover:bg-border hover:text-ink"
+        >
+          Logout
+        </button>
+      </div>
     </aside>
   )
 }

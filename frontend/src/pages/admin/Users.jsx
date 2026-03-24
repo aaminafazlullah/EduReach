@@ -25,25 +25,33 @@ export default function Users() {
 
   return (
     <DashboardLayout>
-      <Card
-        title="All users"
-        description="Overview of all users in the EduReach platform."
-      >
-        {loading ? (
-          <Loader />
-        ) : (
-          <Table
-            columns={[
-              { key: 'name', header: 'Name' },
-              { key: 'email', header: 'Email' },
-              { key: 'role', header: 'Role' },
-            ]}
-            data={rows}
-            emptyLabel="No users found."
-          />
-        )}
-      </Card>
+      <div className="space-y-8">
+        {/* Header */}
+        <div>
+          <h1 className="font-display text-2xl font-semibold text-ink mb-2">
+            All Users
+          </h1>
+          <p className="font-sans text-sm text-ink-2">
+            Overview of all users in the EduReach platform
+          </p>
+        </div>
+
+        <Card>
+          {loading ? (
+            <Loader />
+          ) : (
+            <Table
+              columns={[
+                { key: 'name', header: 'Name' },
+                { key: 'email', header: 'Email' },
+                { key: 'role', header: 'Role' },
+              ]}
+              data={rows}
+              emptyLabel="No users found"
+            />
+          )}
+        </Card>
+      </div>
     </DashboardLayout>
   )
 }
-

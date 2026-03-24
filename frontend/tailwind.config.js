@@ -4,21 +4,48 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Outfit', 'system-ui', 'sans-serif'],
+        display: ['Fraunces', 'serif'],
+        sans: ['DM Sans', 'system-ui', 'sans-serif'],
       },
       colors: {
-        background: '#f9fafb',
-        surface: '#ffffff',
-        muted: '#6b7280',
-        primary: {
-          DEFAULT: '#0f172a',
-        },
+        bg: '#FAFAF7',
+        surface: '#FFFFFF',
+        'surface-2': '#F4F3EE',
+        border: '#E8E5DC',
+        ink: '#1A1814',
+        'ink-2': '#6B6760',
+        accent: '#E8860A',
+        'accent-light': '#FEF3E2',
+        green: '#2D7A4F',
+        'green-light': '#E8F5EE',
+        red: '#C0392B',
+        'red-light': '#FDECEA',
+        blue: '#1A56DB',
+        'blue-light': '#EBF0FF',
       },
       boxShadow: {
-        soft: '0 10px 40px rgba(15, 23, 42, 0.06)',
+        card: '0 1px 3px rgba(26,24,20,0.06), 0 4px 16px rgba(26,24,20,0.04)',
+        elevated: '0 8px 32px rgba(26,24,20,0.10)',
       },
       borderRadius: {
-        xl: '0.9rem',
+        sm: '6px',
+        md: '10px',
+        lg: '16px',
+        xl: '24px',
+      },
+      animation: {
+        'page-enter': 'pageEnter 250ms ease-out',
+        'pulse-dot': 'pulseDot 1.5s ease-in-out infinite',
+      },
+      keyframes: {
+        pageEnter: {
+          '0%': { opacity: '0', transform: 'translateY(8px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        pulseDot: {
+          '0%, 100%': { opacity: '1' },
+          '50%': { opacity: '0.5' },
+        },
       },
     },
   },

@@ -11,7 +11,7 @@ export default function Input({
       {label && (
         <label
           htmlFor={name}
-          className="text-xs font-medium text-slate-700"
+          className="font-sans text-xs font-medium uppercase tracking-wide text-ink-2"
         >
           {label}
         </label>
@@ -20,12 +20,16 @@ export default function Input({
         id={name}
         name={name}
         type={type}
-        className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none ring-0 transition focus:border-slate-900 focus:ring-1 focus:ring-slate-900 placeholder:text-slate-400"
+        className={`w-full rounded-md bg-surface py-3 px-4 text-ink outline-none transition-all duration-150 placeholder:text-ink-2/50 ${
+          error
+            ? 'border-2 border-red focus:border-red focus:ring-2 focus:ring-red/20'
+            : 'border border-border focus:border-accent focus:ring-2 focus:ring-accent/20'
+        }`}
         {...(register ? register(name) : {})}
         {...rest}
       />
       {error && (
-        <p className="text-xs text-red-500">
+        <p className="font-sans text-xs text-red">
           {error.message || 'This field is required'}
         </p>
       )}
