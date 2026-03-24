@@ -1,6 +1,7 @@
-export default function Card({ title, description, children, className = '', accent = false }) {
+export default function Card({ title, description, children, className = '', accent = false, onClick }) {
   return (
     <section
+      onClick={onClick}
       className={`rounded-lg bg-surface p-6 shadow-card transition-all duration-200 hover:shadow-elevated ${
         accent ? 'border-l-4 border-accent' : ''
       } ${className}`}

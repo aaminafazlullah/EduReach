@@ -74,19 +74,6 @@ export default function Sidebar() {
         })}
       </nav>
 
-      <div className="absolute bottom-5 left-4 right-4">
-        <div className="mb-3 rounded-md bg-surface px-3 py-2">
-          <p className="font-sans text-xs text-ink-2">
-            Logged in as <span className="font-medium capitalize text-ink">{role}</span>
-          </p>
-        </div>
-        <button
-          onClick={logout}
-          className="w-full rounded-md border border-border bg-surface px-3 py-2 font-sans text-xs font-medium text-ink-2 transition-colors hover:bg-border hover:text-ink"
-        >
-          Logout
-        </button>
-      </div>
     </aside>
   )
 }
