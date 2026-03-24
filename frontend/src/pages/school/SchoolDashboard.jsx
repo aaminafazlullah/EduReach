@@ -5,8 +5,11 @@ import Loader from '../../components/Loader.jsx'
 import Button from '../../components/Button.jsx'
 import { eventService } from '../../services/eventService.js'
 import { Link } from 'react-router-dom'
+import EmailVerificationBadge from '../../components/EmailVerificationBadge.jsx'
+import { useAuth } from '../../context/AuthContext.jsx'
 
 export default function SchoolDashboard() {
+  const { emailVerified } = useAuth()
   const [events, setEvents] = useState([])
   const [loading, setLoading] = useState(true)
 
@@ -41,11 +44,14 @@ export default function SchoolDashboard() {
   return (
     <DashboardLayout>
       <div className="space-y-8">
-        {/* Header */}
+        <div className="flex items-center justify-between">
+          {/* Header */}
         <div>
           <h1 className="font-display text-2xl font-semibold text-ink mb-2">
-            {getGreeting()}, School Admin!
-          </h1>
+              {getGreeting()}, School Admin!
+            </h1>
+          <EmailVerificationBadge isVerified={emailVerified} />
+        </div>
           <p className="font-sans text-sm text-ink-2">
             Manage your school's events and requirements efficiently
           </p>

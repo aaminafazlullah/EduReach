@@ -4,6 +4,8 @@ export interface IAuth extends Document {
   user_id: mongoose.Types.ObjectId;
   passwordHash: string;
   role: 'admin' | 'school' | 'volunteer' | 'donor';
+  emailVerificationToken?: string;
+  emailVerificationExpires?: Date;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -24,6 +26,14 @@ const AuthSchema: Schema = new Schema(
       type: String,
       enum: ['admin', 'school', 'volunteer', 'donor'],
       required: true,
+    },
+    emailVerificationToken: {
+      type: String,
+      default: null,
+    },
+    emailVerificationExpires: {
+      type: Date,
+      default: null,
     },
   },
   { timestamps: true }

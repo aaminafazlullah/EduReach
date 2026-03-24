@@ -20,8 +20,8 @@ export default function Login() {
     setServerError('')
     try {
       const { data } = await authService.login(values)
-      const { token, role, userId } = data
-      login({ token, role, userId })
+      const { token, role, userId, emailVerified } = data
+      login({ token, role, userId, emailVerified })
 
       if (role === 'admin') navigate('/admin', { replace: true })
       else if (role === 'donor') navigate('/donor', { replace: true })

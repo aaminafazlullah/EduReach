@@ -5,6 +5,8 @@ export const authService = {
   register: (data) => api.post('/auth/register', data),
   schoolRegister: (data) => api.post('/auth/school/register', data),
   volunteerRegister: (data) => api.post('/auth/volunteer/register', data),
+  verifyEmail: (token) => api.post('/auth/verify-email', { token }),
+  resendVerificationEmail: (email) => api.post('/auth/resend-verification-email', { email }),
 }
 
 export default authService

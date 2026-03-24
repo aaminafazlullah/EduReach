@@ -5,6 +5,7 @@ export interface IUser extends Document {
   email: string;
   phone: string;
   role: 'donor' | 'volunteer' | 'admin' | 'school';
+  isEmailVerified: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -16,7 +17,7 @@ const UserSchema: Schema = new Schema({
     unique: true,
     lowercase: true,
     trim: true,
-    match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please provide a valid email address']
+    match: [/^[^\s@]+@[^\s@]+\.[^\s@]+$/, 'Please provide a valid email address']
   },
   name: { 
     type: String, 
@@ -32,6 +33,10 @@ const UserSchema: Schema = new Schema({
     type: String, 
     enum: ['donor', 'volunteer', 'admin', 'school'], 
     default: 'donor',
+  },
+  isEmailVerified: {
+    type: Boolean,
+    default: false,
   },
 }, { timestamps: true });
 

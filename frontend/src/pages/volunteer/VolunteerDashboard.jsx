@@ -6,8 +6,11 @@ import Modal from '../../components/Modal.jsx'
 import Card from '../../components/Card.jsx'
 import Button from '../../components/Button.jsx'
 import { volunteerService } from '../../services/volunteerService.js'
+import EmailVerificationBadge from '../../components/EmailVerificationBadge.jsx'
+import { useAuth } from '../../context/AuthContext.jsx'
 
 export default function VolunteerDashboard() {
+  const { emailVerified } = useAuth()
   const [profile, setProfile] = useState(null)
   const [loading, setLoading] = useState(true)
   const [greeting, setGreeting] = useState('Good morning')
@@ -96,9 +99,12 @@ export default function VolunteerDashboard() {
       <div className="space-y-8">
         {/* Header */}
         <div>
+          <div className="flex items-center justify-between">
           <h1 className="font-display text-2xl font-semibold text-ink mb-2">
-            {greeting}, {userName}!
-          </h1>
+              {greeting}, {userName}!
+            </h1>
+          <EmailVerificationBadge isVerified={emailVerified} />
+        </div>
           <p className="font-sans text-sm text-ink-2">
             Here's your impact overview today
           </p>

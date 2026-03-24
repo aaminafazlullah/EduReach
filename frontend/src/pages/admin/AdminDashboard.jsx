@@ -3,8 +3,11 @@ import DashboardLayout from '../../layouts/DashboardLayout.jsx'
 import Card from '../../components/Card.jsx'
 import Loader from '../../components/Loader.jsx'
 import { adminService } from '../../services/adminService.js'
+import EmailVerificationBadge from '../../components/EmailVerificationBadge.jsx'
+import { useAuth } from '../../context/AuthContext.jsx'
 
 export default function AdminDashboard() {
+  const { emailVerified } = useAuth()
   const [stats, setStats] = useState(null)
   const [loading, setLoading] = useState(true)
 
@@ -24,17 +27,13 @@ export default function AdminDashboard() {
 
   return (
     <DashboardLayout>
-      <div className="space-y-8">
-        {/* Header */}
-        <div>
-          <h1 className="font-display text-2xl font-semibold text-ink mb-2">
-            Admin Dashboard
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <h1 className="text-lg font-semibold tracking-tight text-slate-900">
+            Admin overview
           </h1>
-          <p className="font-sans text-sm text-ink-2">
-            Overview of platform statistics and user activity
-          </p>
+          <EmailVerificationBadge isVerified={emailVerified} />
         </div>
-
         {loading ? (
           <Card>
             <Loader />

@@ -3,9 +3,11 @@ import Card from '../../components/Card.jsx'
 import { useEffect, useState } from 'react'
 import { donorService } from '../../services/donorService.js'
 import Loader from '../../components/Loader.jsx'
+import EmailVerificationBadge from '../../components/EmailVerificationBadge.jsx'
 import { useAuth } from '../../context/AuthContext.jsx'
 
 export default function DonorDashboard() {
+  const { emailVerified } = useAuth()
   const [stats, setStats] = useState(null)
   const [loading, setLoading] = useState(true)
   const { user } = useAuth()
@@ -37,17 +39,13 @@ export default function DonorDashboard() {
 
   return (
     <DashboardLayout>
-      <div className="space-y-8">
-        {/* Header */}
-        <div>
-          <h1 className="font-display text-2xl font-semibold text-ink">
-            {getGreeting()}, {user?.name || 'Donor'}!
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <h1 className="text-lg font-semibold tracking-tight text-slate-900">
+            Donor overview
           </h1>
-          <p className="font-sans mt-2 text-sm text-ink-2">
-            Your generosity is making education accessible to all.
-          </p>
+          <EmailVerificationBadge isVerified={emailVerified} />
         </div>
-
         {loading ? (
           <Loader />
         ) : (
