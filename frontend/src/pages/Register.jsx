@@ -77,8 +77,8 @@ export default function Register() {
   return (
     <div className="flex min-h-screen bg-bg">
       {/* Left Panel - Brand */}
-      <div className="hidden w-2/5 bg-gradient-to-br from-accent to-accent-light lg:block">
-        <div className="flex h-full flex-col justify-center px-12">
+      <div className="relative hidden w-2/5 bg-gradient-to-br from-accent to-accent-light lg:block">
+        <div className="relative z-10 flex h-full flex-col justify-center px-12">
           <div className="mb-8">
             <div className="mb-6 flex items-center gap-3">
               <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-white text-lg font-bold text-accent">
@@ -97,7 +97,7 @@ export default function Register() {
           </div>
           
           {/* Pattern Overlay */}
-          <div className="absolute inset-0 opacity-10">
+          <div className="pointer-events-none absolute inset-0 z-0 opacity-10">
             <div 
               className="h-full w-full" 
               style={{
