@@ -47,7 +47,7 @@ export function AuthProvider({ children }) {
     localStorage.removeItem('emailVerified')
   }
 
-  const value = { token, role, userId, login, logout, loading, showLoginToast, setShowLoginToast }
+  const value = { token, role, userId, emailVerified, login, logout, loading, showLoginToast, setShowLoginToast }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }
@@ -59,4 +59,3 @@ export function useAuth() {
   }
   return ctx
 }
-

@@ -15,7 +15,12 @@ export default function AdminDashboard() {
     const load = async () => {
       try {
         const { data } = await adminService.stats()
-        setStats(data)
+        setStats({
+          totalUsers: data?.data?.users?.total ?? 0,
+          totalSchools: data?.data?.schools?.total ?? 0,
+          totalVolunteers: data?.data?.volunteers?.total ?? 0,
+          totalDonations: data?.data?.donations?.cashDonations?.totalAmount ?? 0,
+        })
       } catch {
         setStats(null)
       } finally {
@@ -113,4 +118,3 @@ export default function AdminDashboard() {
     </DashboardLayout>
   )
 }
-

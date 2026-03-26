@@ -17,7 +17,7 @@ export default function SchoolDashboard() {
     const load = async () => {
       try {
         const { data } = await eventService.myEvents()
-        setEvents(data || [])
+        setEvents(data?.data || [])
       } catch {
         setEvents([])
       } finally {
@@ -220,4 +220,4 @@ export default function SchoolDashboard() {
       </div>
     </DashboardLayout>
   )
-}
+} 

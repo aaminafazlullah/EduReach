@@ -13,7 +13,7 @@ export default function DonationHistory() {
     const load = async () => {
       try {
         const { data } = await donorService.history()
-        setRecords(data || [])
+        setRecords(data?.data?.donations || [])
       } catch {
         setRecords([])
       } finally {
@@ -205,4 +205,3 @@ export default function DonationHistory() {
     </DashboardLayout>
   )
 }
-
