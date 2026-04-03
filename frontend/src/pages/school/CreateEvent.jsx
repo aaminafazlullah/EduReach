@@ -31,7 +31,7 @@ export default function CreateEvent() {
 
   return (
     <DashboardLayout>
-      <div className="max-w-xl">
+      <div className="max-w-5xl">
         <div className="mb-8">
           <h1 className="font-display text-2xl font-semibold text-ink mb-2">
             Create Volunteer Event
@@ -41,7 +41,10 @@ export default function CreateEvent() {
           </p>
         </div>
 
-        <Card accent>
+        <div className="grid gap-8 lg:grid-cols-3">
+          {/* Main Form */}
+          <div className="lg:col-span-2">
+            <Card accent>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             {/* Event Details Section */}
             <div>
@@ -145,23 +148,17 @@ export default function CreateEvent() {
               >
                 {submitting ? 'Creating...' : 'Create Event'}
               </Button>
-              
-              <div className="flex items-center gap-2 text-ink-2">
-                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
-                <span className="font-sans text-xs">Calendar icon</span>
-              </div>
             </div>
           </form>
-        </Card>
+            </Card>
+          </div>
 
-        {/* Info Cards */}
-        <div className="mt-8 grid gap-6 md:grid-cols-2">
+          {/* Info Cards */}
+          <div className="space-y-6">
           <Card className="bg-surface-2 border-0">
             <div className="mb-4">
               <h3 className="font-display text-base font-semibold text-ink">
-                📅 Event Ideas
+                Event Ideas
               </h3>
             </div>
             
@@ -188,7 +185,7 @@ export default function CreateEvent() {
           <Card className="bg-surface-2 border-0">
             <div className="mb-4">
               <h3 className="font-display text-base font-semibold text-ink">
-                💡 Best Practices
+                Best Practices
               </h3>
             </div>
             
@@ -247,7 +244,8 @@ export default function CreateEvent() {
                 <li>• Creates positive educational environments</li>
               </ul>
             </div>
-          </Card>
+            </Card>
+          </div>
         </div>
       </div>
     </DashboardLayout>

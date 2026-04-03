@@ -15,7 +15,7 @@ export default function PendingVolunteers() {
     setLoading(true)
     try {
       const { data } = await adminService.pending()
-      setRows(data?.volunteers || [])
+      setRows(data?.data?.volunteers || [])
     } catch {
       setRows([])
     } finally {

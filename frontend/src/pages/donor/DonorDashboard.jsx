@@ -16,10 +16,11 @@ export default function DonorDashboard() {
     const load = async () => {
       try {
         const { data } = await donorService.history()
-        const total = data?.reduce((sum, d) => sum + (d.amount || 0), 0) || 0
+        const history = data?.data?.donations || []
+        const summary = data?.data?.summary || { totalAmount: 0, totalDonations: 0 }
         setStats({
-          totalDonations: total,
-          donationsCount: data?.length || 0,
+          totalDonations: summary.totalAmount,
+          donationsCount: summary.totalDonations,
         })
       } catch {
         setStats({ totalDonations: 0, donationsCount: 0 })

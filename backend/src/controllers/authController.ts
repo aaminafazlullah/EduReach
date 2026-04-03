@@ -179,68 +179,109 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
     role: user.role,
     expiresIn: config.JWT_EXPIRY,
     emailVerified: user.isEmailVerified,
+    userId: user._id,
   });
 });
 
 // POST /api/auth/school/register - Specific registration for Schools (creates User + School)
 export const schoolRegister = asyncHandler(async (req: Request, res: Response) => {
   const { email, password, schoolDetails, contactPerson, verification, requirements } = req.body;
+  
+  // Use a session for atomicity
+  const session = await User.startSession();
+  session.startTransaction();
 
-  const existingUser = await User.findOne({ email });
-  if (existingUser) {
-    logger.warn(`School registration attempt with existing email: ${email}`);
-    return res.status(400).json({ success: false, message: 'Account with this email already exists' });
-  }
-
-  const passwordHash = await bcrypt.hash(password, 10);
-
-  // Create user for identity
-  const newUser = await User.create({
-    name: schoolDetails.name,
-    email,
-    phone: contactPerson.phone,
-    role: 'school',
-    isEmailVerified: false,
-  });
-
-  // Generate email verification token (expires in 24 hours)
-  const verificationToken = crypto.randomBytes(32).toString('hex');
-  const tokenExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000);
-
-  // Create auth record for security
-  await Auth.create({
-    user_id: newUser._id,
-    passwordHash,
-    role: 'school',
-    emailVerificationToken: verificationToken,
-    emailVerificationExpires: tokenExpiry,
-  });
-
-  // Create school profile linked to user
-  const newSchool = await School.create({
-    user_id: newUser._id,
-    schoolDetails,
-    contactPerson,
-    verification: verification || { documentUrl: '', isVerified: false },
-    requirements: requirements || { infrastructure: [], booksNeeded: false, volunteerRoles: [] },
-  });
-
-  // Send verification email
   try {
-    await sendVerificationEmail(email, schoolDetails.name, verificationToken);
-    logger.info(`Verification email sent to: ${email}`);
-  } catch (error) {
-    logger.error(`Failed to send verification email to ${email}:`, error);
-    // Don't fail registration if email fails to send
+    const existingUser = await User.findOne({ email }).session(session);
+    if (existingUser) {
+      await session.abortTransaction();
+      session.endSession();
+      logger.warn(`School registration attempt with existing email: ${email}`);
+      return res.status(400).json({ success: false, message: 'Account with this email already exists' });
+    }
+
+    // Check if UDISE code is already taken early
+    const existingSchool = await School.findOne({ 'schoolDetails.udiseCode': schoolDetails.udiseCode }).session(session);
+    if (existingSchool) {
+      await session.abortTransaction();
+      session.endSession();
+      return res.status(400).json({ success: false, message: 'School with this UDISE code is already registered' });
+    }
+
+    const passwordHash = await bcrypt.hash(password, 10);
+
+    // 1. Create user for identity
+    let newUser;
+    try {
+      newUser = await User.create([{
+        name: schoolDetails.name,
+        email,
+        phone: contactPerson.phone,
+        role: 'school',
+        isEmailVerified: false,
+      }], { session });
+    } catch (err: any) {
+      await session.abortTransaction();
+      session.endSession();
+      logger.error('User creation failed in school registration:', err);
+      // Return specific validation message if possible
+      const message = err.name === 'ValidationError' 
+        ? Object.values(err.errors).map((e: any) => e.message).join('. ') 
+        : 'Failed to create user record';
+      return res.status(400).json({ success: false, message });
+    }
+
+    const userId = newUser[0]._id;
+
+    // 2. Generate email verification token
+    const verificationToken = crypto.randomBytes(32).toString('hex');
+    const tokenExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000);
+
+    // 3. Create auth record for security
+    await Auth.create([{
+      user_id: userId,
+      passwordHash,
+      role: 'school',
+      emailVerificationToken: verificationToken,
+      emailVerificationExpires: tokenExpiry,
+    }], { session });
+
+    // 4. Create school profile linked to user
+    const newSchool = await School.create([{
+      user_id: userId,
+      schoolDetails,
+      contactPerson,
+      verification: verification || { documentUrl: 'https://placeholder.com/school-id', isVerified: false },
+      requirements: requirements || { infrastructure: [], booksNeeded: false, volunteerRoles: [] },
+    }], { session });
+
+    await session.commitTransaction();
+    session.endSession();
+
+    // Send verification email (outside transaction)
+    try {
+      await sendVerificationEmail(email, schoolDetails.name, verificationToken);
+    } catch (error) {
+       logger.error(`Failed to send verification email to ${email}:`, error);
+    }
+
+    logger.info(`School registered successfully: ${schoolDetails.name} (${email})`);
+
+    res.status(201).json({
+      success: true,
+      message: 'School registered successfully. Please check your email to verify your account.',
+      data: { userId, schoolId: newSchool[0]._id, schoolName: schoolDetails.name },
+    });
+
+  } catch (error: any) {
+    await session.abortTransaction();
+    session.endSession();
+    logger.error('Critical error during school registration:', error);
+    res.status(error.statusCode || 500).json({
+      success: false,
+      message: error.message || 'Registration failed due to a server error',
+    });
   }
-
-  logger.info(`School registered: ${schoolDetails.name} (${email})`);
-
-  res.status(201).json({
-    success: true,
-    message: 'School registered successfully. Please check your email to verify your account.',
-    data: { userId: newUser._id, schoolId: newSchool._id, schoolName: schoolDetails.name },
-  });
 });
 
 // POST /api/auth/forgot-password - Initiate password reset

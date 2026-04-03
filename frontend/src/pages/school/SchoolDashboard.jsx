@@ -17,7 +17,7 @@ export default function SchoolDashboard() {
     const load = async () => {
       try {
         const { data } = await eventService.myEvents()
-        setEvents(data || [])
+        setEvents(data?.data || [])
       } catch {
         setEvents([])
       } finally {
@@ -128,7 +128,7 @@ export default function SchoolDashboard() {
                     <p className="font-sans mt-1 text-sm text-ink-2">
                       Organize volunteer activities
                     </p>
-                    <Link to="/school/events?action=create">
+                    <Link to="/school/events/create">
                       <Button className="mt-3">
                         Create New Event
                       </Button>

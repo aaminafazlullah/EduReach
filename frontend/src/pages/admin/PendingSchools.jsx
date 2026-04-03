@@ -15,7 +15,7 @@ export default function PendingSchools() {
     setLoading(true)
     try {
       const { data } = await adminService.pending()
-      setRows(data?.schools || [])
+      setRows(data?.data?.schools || [])
     } catch {
       setRows([])
     } finally {

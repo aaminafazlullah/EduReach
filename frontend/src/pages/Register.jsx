@@ -25,7 +25,12 @@ export default function Register() {
         phone: '',
       },
       verification: {
-        documentUrl: '',
+        documentUrl: 'https://placeholder.com/registration-doc',
+      },
+      requirements: {
+        infrastructure: '',
+        booksNeeded: false,
+        volunteerRoles: '',
       },
     },
   })
@@ -48,6 +53,11 @@ export default function Register() {
           schoolDetails: values.schoolDetails,
           contactPerson: values.contactPerson,
           verification: values.verification,
+          requirements: {
+            infrastructure: values.requirements.infrastructure.split(',').map(s => s.trim()).filter(Boolean),
+            booksNeeded: values.requirements.booksNeeded,
+            volunteerRoles: values.requirements.volunteerRoles.split(',').map(s => s.trim()).filter(Boolean),
+          }
         }
         await authService.schoolRegister(payload)
       } else if (values.role === 'volunteer') {
@@ -182,6 +192,12 @@ export default function Register() {
                   inputMode="numeric"
                   placeholder="10 digits"
                   required
+                  validation={{
+                    pattern: {
+                      value: /^[0-9]{10}$/,
+                      message: 'Please enter a valid 10-digit phone number'
+                    }
+                  }}
                 />
               )}
 
@@ -197,25 +213,128 @@ export default function Register() {
                         name="schoolDetails.udiseCode"
                         register={register}
                         error={errors.schoolDetails?.udiseCode}
+                        placeholder="Ex: 33181801201"
                         required
                       />
                       <Input
-                        label="Contact person phone"
-                        name="contactPerson.phone"
+                        label="School type"
+                        name="schoolDetails.schoolType"
+                        type="select"
                         register={register}
-                        error={errors.contactPerson?.phone}
-                        inputMode="numeric"
-                        placeholder="10 digits"
+                        error={errors.schoolDetails?.schoolType}
+                        required
+                      >
+                        <option value="government">Government</option>
+                        <option value="aided">Aided</option>
+                        <option value="private_non_profit">Private (Non-profit)</option>
+                      </Input>
+                    </div>
+
+                    <Input
+                      label="School address"
+                      name="schoolDetails.address"
+                      register={register}
+                      error={errors.schoolDetails?.address}
+                      required
+                    />
+
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                      <Input
+                        label="City"
+                        name="schoolDetails.city"
+                        register={register}
+                        error={errors.schoolDetails?.city}
+                        required
+                      />
+                      <Input
+                        label="State"
+                        name="schoolDetails.state"
+                        register={register}
+                        error={errors.schoolDetails?.state}
                         required
                       />
                     </div>
+                    
                     <Input
-                      label="Contact person name"
-                      name="contactPerson.name"
+                      label="Pincode"
+                      name="schoolDetails.pincode"
                       register={register}
-                      error={errors.contactPerson?.name}
+                      error={errors.schoolDetails?.pincode}
+                      inputMode="numeric"
                       required
                     />
+
+                    <div className="border-t border-border pt-4 mt-2">
+                       <h4 className="font-sans text-xs font-semibold uppercase tracking-wider text-ink-2 mb-4">
+                        Contact Person Details
+                      </h4>
+                      <div className="space-y-4">
+                        <Input
+                          label="Contact person name"
+                          name="contactPerson.name"
+                          register={register}
+                          error={errors.contactPerson?.name}
+                          required
+                        />
+                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                          <Input
+                            label="Role"
+                            name="contactPerson.role"
+                            register={register}
+                            error={errors.contactPerson?.role}
+                            placeholder="Ex: Principal"
+                            required
+                          />
+                          <Input
+                            label="Phone"
+                            name="contactPerson.phone"
+                            register={register}
+                            error={errors.contactPerson?.phone}
+                            inputMode="numeric"
+                            placeholder="10 digits"
+                            required
+                            validation={{
+                              pattern: {
+                                value: /^[0-9]{10}$/,
+                                message: 'Please enter a valid 10-digit phone number'
+                              }
+                            }}
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="border-t border-border pt-4 mt-2">
+                       <h4 className="font-sans text-xs font-semibold uppercase tracking-wider text-ink-2 mb-4">
+                        Initial Requirements
+                      </h4>
+                      <div className="space-y-4">
+                        <Input
+                          label="Infrastructure Needs"
+                          name="requirements.infrastructure"
+                          register={register}
+                          placeholder="Ex: Desks, Water Purifier (comma separated)"
+                        />
+                        <Input
+                          label="Volunteer Roles Needed"
+                          name="requirements.volunteerRoles"
+                          register={register}
+                          placeholder="Ex: Math Teacher, Art Mentor (comma separated)"
+                        />
+                        
+                        <div className="flex items-center gap-3 py-2 px-1">
+                          <input
+                            type="checkbox"
+                            id="booksNeeded"
+                            {...register('requirements.booksNeeded')}
+                            className="h-4 w-4 rounded border-border text-accent focus:ring-accent"
+                          />
+                          <label htmlFor="booksNeeded" className="font-sans text-sm text-ink-2">
+                            Our school needs books for the library
+                          </label>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               )}

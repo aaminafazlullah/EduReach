@@ -93,7 +93,7 @@ export default function SchoolEvents() {
               <p className="font-sans text-sm text-ink-2 mb-6">
                 Create your first volunteer event to engage the community
               </p>
-              <Link to="/school/events?action=create">
+              <Link to="/school/events/create">
                 <Button>
                   Create Event
                 </Button>
@@ -104,7 +104,7 @@ export default function SchoolEvents() {
           <div className="space-y-6">
             {/* Quick Actions */}
             <div className="flex gap-4">
-              <Link to="/school/events?action=create">
+              <Link to="/school/events/create">
                 <Button>
                   <svg className="mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />

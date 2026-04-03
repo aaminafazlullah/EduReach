@@ -13,7 +13,7 @@ export default function Users() {
     const load = async () => {
       try {
         const { data } = await adminService.users()
-        setRows(data || [])
+        setRows(data?.data || [])
       } catch {
         setRows([])
       } finally {

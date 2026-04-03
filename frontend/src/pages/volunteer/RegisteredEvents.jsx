@@ -24,10 +24,8 @@ export default function RegisteredEvents() {
   }
 
   useEffect(() => {
-    if (userId) {
-      loadEvents()
-    }
-  }, [userId])
+    loadEvents()
+  }, [])
 
   const handleWithdraw = async (eventId) => {
     setLoadingAction(true)

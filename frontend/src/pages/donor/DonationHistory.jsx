@@ -13,7 +13,7 @@ export default function DonationHistory() {
     const load = async () => {
       try {
         const { data } = await donorService.history()
-        setRecords(data || [])
+        setRecords(data?.data?.donations || [])
       } catch {
         setRecords([])
       } finally {
@@ -158,17 +158,18 @@ export default function DonationHistory() {
             <Table
               columns={[
                 { 
-                  key: 'date', 
+                  key: 'createdAt', 
                   header: 'Date',
-                  render: (row) => (
-                    <div className="font-sans text-sm text-ink">
-                      {row.date ? new Date(row.date).toLocaleDateString('en-IN', {
-                        day: 'numeric',
-                        month: 'short',
-                        year: 'numeric'
-                      }) : '-'}
-                    </div>
-                  )
+                  render: (row) => {
+                    if (!row.createdAt) return <div className="font-sans text-sm text-ink">-</div>;
+                    const date = new Date(row.createdAt);
+                    const formattedDate = `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}`;
+                    return (
+                      <div className="font-sans text-sm text-ink">
+                        {formattedDate}
+                      </div>
+                    );
+                  }
                 },
                 { 
                   key: 'type', 
